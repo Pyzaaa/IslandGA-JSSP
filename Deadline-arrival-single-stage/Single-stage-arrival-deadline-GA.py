@@ -193,12 +193,12 @@ def run_ga_with_deadlines(dataset_path="p_parallel_deadlines_dataset.json"):
 
     params = GAParams(
         pop_size=100,
-        generations=2000,
+        generations=10000,
         mutation_rate=0.03,
         elitism=4,
         seed_with_lpt=True,
-        stagnation_limit=150,
-        random_seed=42,
+        stagnation_limit=1000,
+        random_seed=None,
     )
 
     results = []

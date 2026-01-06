@@ -5,8 +5,12 @@
 #include <random>
 #include <fstream>
 #include <tuple>
+#include <limits>
 #include <string>
-#include <chrono>
+#include <iomanip>
+#include <chrono> // Dodano dla obsługi czasu
+#include <omp.h> // dla pararell
+
 
 using namespace std;
 
@@ -23,7 +27,7 @@ double rand_double() {
     return dist(rng);
 }
 
-/* ===================== MAKESPAN (FAST) ===================== */
+/* ===================== MAKESPAN ===================== */
 int makespan(
     const vector<int>& order,
     const vector<vector<int>>& times,
@@ -34,10 +38,10 @@ int makespan(
 
     for (int job : order) {
         int prev = 0;
-        const auto& jt = times[job];
+        const auto& job_times = times[job];
         for (int k = 0; k < m; k++) {
-            int start = machine_ready[k] > prev ? machine_ready[k] : prev;
-            int completion = start + jt[k];
+            int start = max(machine_ready[k], prev);
+            int completion = start + job_times[k];
             machine_ready[k] = completion;
             prev = completion;
         }
@@ -114,7 +118,6 @@ vector<int> neh_sequence(const vector<vector<int>>& times) {
     int m = times[0].size();
     vector<int> jobs(n);
     iota(jobs.begin(), jobs.end(), 0);
-
     vector<int> machine_ready(m);
 
     sort(jobs.begin(), jobs.end(), [&](int a, int b) {
@@ -142,6 +145,32 @@ vector<int> neh_sequence(const vector<vector<int>>& times) {
     return seq;
 }
 
+/* ===================== BOUNDS ===================== */
+tuple<int,int,int,int> compute_bounds(const vector<vector<int>>& times) {
+    int n = times.size();
+    int m = times[0].size();
+
+    int lb_machine = 0;
+    for (int k = 0; k < m; k++) {
+        int sum = 0;
+        for (int j = 0; j < n; j++)
+            sum += times[j][k];
+        lb_machine = max(lb_machine, sum);
+    }
+
+    int lb_job = 0;
+    for (int j = 0; j < n; j++) {
+        int sum = accumulate(times[j].begin(), times[j].end(), 0);
+        lb_job = max(lb_job, sum);
+    }
+
+    int ub = 0;
+    for (auto& r : times)
+        ub += accumulate(r.begin(), r.end(), 0);
+
+    return { lb_machine, lb_job, max(lb_machine, lb_job), ub };
+}
+
 /* ===================== IO ===================== */
 vector<vector<int>> read_input(const string& path) {
     ifstream f(path);
@@ -166,7 +195,7 @@ int main(int argc, char* argv[]) {
     string input_file = argv[1];
     string init_mode = "neh";
     bool verbose = false;
-    bool use_chrono = false;
+    bool use_chrono = false; // Flaga pomiaru czasu
 
     int pop_size = 120;
     int generations = 5000;
@@ -187,14 +216,18 @@ int main(int argc, char* argv[]) {
         else if (a == "--stagnation") stagnation_limit = stoi(argv[++i]);
         else if (a == "--mut-boost") mut_boost = stoi(argv[++i]);
         else if (a == "--verbose") verbose = true;
-        else if (a == "--chrono") use_chrono = true;
+        else if (a == "--chrono") use_chrono = true; // Obsługa argumentu
     }
-
-    auto t_start = chrono::high_resolution_clock::now();
 
     auto times = read_input(input_file);
     int n = times.size();
     int m = times[0].size();
+
+    int lbm, lbj, lb, ub;
+    tie(lbm, lbj, lb, ub) = compute_bounds(times);
+
+    // ROZPOCZĘCIE POMIARU CZASU
+    auto start_time = chrono::high_resolution_clock::now();
 
     vector<vector<int>> population;
     if (init_mode == "neh") {
@@ -212,10 +245,15 @@ int main(int argc, char* argv[]) {
 
     vector<int> machine_ready(m);
     vector<int> fitness(pop_size);
+
+
+
     for (int i = 0; i < pop_size; i++)
         fitness[i] = makespan(population[i], times, machine_ready);
 
-    int best = *min_element(fitness.begin(), fitness.end());
+
+    int best = INT_MAX;
+    vector<int> best_perm;
     int stagnation = 0;
     double cur_mut = mut_rate;
 
@@ -248,12 +286,17 @@ int main(int argc, char* argv[]) {
         }
 
         population = new_pop;
-        for (int i = 0; i < pop_size; i++)
-            fitness[i] = makespan(population[i], times, machine_ready);
+        #pragma omp parallel for
+        for (int i = 0; i < pop_size; i++) {
+            vector<int> local_machine_ready(m);
+            fitness[i] = makespan(population[i], times, local_machine_ready);
+        }
+
 
         int cur_best = *min_element(fitness.begin(), fitness.end());
         if (cur_best < best) {
             best = cur_best;
+            best_perm = population[min_element(fitness.begin(), fitness.end()) - fitness.begin()];
             stagnation = 0;
             cur_mut = mut_rate;
         } else stagnation++;
@@ -261,19 +304,28 @@ int main(int argc, char* argv[]) {
         if (stagnation == mut_boost)
             cur_mut = min(0.9, cur_mut * 2);
 
-        if (verbose && (gen < 10 || (gen + 1) % (generations / 100) == 0))
-            cout << "Gen " << gen + 1 << " | Best = " << best << "\n";
+        if (verbose && (gen < 10 || (gen + 1) % (generations / 100) == 0)) {
+            double gap = 100.0 * (best - lb) / lb;
+            cout << "Gen " << gen + 1
+                 << " | Best Cmax = " << best
+                 << " | Gap = " << fixed << setprecision(2) << gap << "%"
+                 << " | NoImprove = " << stagnation << "\n";
+        }
 
         if (stagnation >= stagnation_limit)
             break;
     }
 
-    auto t_end = chrono::high_resolution_clock::now();
+    // KONIEC POMIARU CZASU
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = end_time - start_time;
+
+    cout << "\nBEST ORDER:\n";
+    for (int j : best_perm) cout << j + 1 << " ";
+    cout << "\nCmax = " << best << "\n";
+    cout << "Gap = " << (best - lb) * 100.0 / lb << "%\n";
 
     if (use_chrono) {
-        double sec = chrono::duration<double>(t_end - t_start).count();
-        cout << "\nTime: " << sec << " s\n";
+        cout << "Execution time: " << fixed << setprecision(4) << elapsed.count() << " seconds\n";
     }
-
-    cout << "Best Cmax = " << best << "\n";
 }

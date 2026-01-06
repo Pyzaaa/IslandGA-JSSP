@@ -7,6 +7,7 @@
 #include <tuple>
 #include <limits>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -228,8 +229,15 @@ void print_schedule(const vector<int>& order, const vector<vector<int>>& times) 
 }
 
 /* ===================== MAIN ===================== */
-int main() {
-    auto times = read_input("data.txt");
+int main(int argc, char* argv[]) {
+    string input_file = "data5.txt";
+    string init_mode = "random";   // "neh" lub "random"
+
+    if (argc > 1) input_file = argv[1];
+    if (argc > 2) init_mode = argv[2];
+    
+    auto times = read_input(input_file);
+
     int n = times.size();
 
     int pop_size = 120;
@@ -239,21 +247,31 @@ int main() {
     int elitism = 2;
     int stagnation_limit = 2000;
     int mut_boost = 500;
+    bool useNEH = true;
 
     vector<vector<int>> population;
-    vector<int> neh = neh_sequence(times);
-    population.push_back(neh);
 
-    for (int i = 1; i < pop_size; i++) {
-        auto p = neh;
-        if (n > 1) swap(p[rand_int(0,n-1)], p[rand_int(0,n-1)]);
-        population.push_back(p);
+    if (init_mode == "neh") {
+        cout << "→ Using NEH initialization\n";
+        vector<int> neh = neh_sequence(times);
+        population.push_back(neh);
+
+        for (int i = 1; i < pop_size; i++) {
+            auto p = neh;
+            swap(p[rand_int(0,n-1)], p[rand_int(0,n-1)]);
+            population.push_back(p);
+        }
+    } else {
+        cout << "→ Using RANDOM initialization\n";
+        for (int i = 0; i < pop_size; i++)
+            population.push_back(random_permutation(n));
     }
+
 
     vector<int> fitness(pop_size);
     for (int i = 0; i < pop_size; i++)
         fitness[i] = makespan(population[i], times);
-        
+
     int lbm, lbj, lb, ub;
     std::tie(lbm, lbj, lb, ub) = compute_bounds(times);
 
@@ -310,6 +328,15 @@ int main() {
 
         if (stagnation >= stagnation_limit)
             break;
+        if (gen < 10 || (gen + 1) % (generations / 100) == 0) {
+        double gap = 100.0 * (best - lb) / lb;
+        cout << "Gen " << gen + 1
+            << " | Best Cmax = " << best
+            << " | Gap = " << fixed << setprecision(2) << gap << "%"
+            << " | NoImprove = " << stagnation
+            << "\n";
+    }
+
     }
 
     int best_idx = min_element(fitness.begin(), fitness.end()) - fitness.begin();

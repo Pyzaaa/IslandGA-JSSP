@@ -280,7 +280,7 @@ def print_schedule(order: List[int], times: List[List[int]]):
 # ------------------ Entry point ------------------
 
 if __name__ == "__main__":
-    input_path = "data.txt"
+    input_path = "data6.txt"
 
     # Read data
     times = read_input_from_file(input_path)
@@ -296,7 +296,7 @@ if __name__ == "__main__":
         seed=None,
         stagnation_limit=2000,
         mut_increase_threshold=500,   # when to boost mutation
-        init_mode="neh",               # "random" or "neh"
+        init_mode="random",               # "random" or "neh"
         diversity_sample=10
     )
 

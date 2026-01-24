@@ -224,7 +224,7 @@ int main(int argc, char* argv[]) {
         h_orders = flatten_population(population);
         cudaMemcpy(d_orders, h_orders.data(), sizeof(int)*pop_size*n, cudaMemcpyHostToDevice);
         gpu_makespan<<<blocks, threads, shared_mem>>>(d_orders, d_times, d_fitness, n, m, pop_size);
-        cudaDeviceSynchronize();
+        // cudaDeviceSynchronize();
         cudaMemcpy(fitness.data(), d_fitness, sizeof(int)*pop_size, cudaMemcpyDeviceToHost);
 
         // 2️⃣ ZNAJDŹ NAJLEPSZEGO

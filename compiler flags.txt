@@ -1,0 +1,1 @@
+nvcc profilingmain10.cu -O3 -arch=sm_86 --use_fast_math -Xptxas -O3,-v -Xcompiler -O3 --extra-device-vectorization -dlto -o gaFinal

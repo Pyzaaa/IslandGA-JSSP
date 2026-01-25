@@ -44,7 +44,7 @@ def policz_makespan(permutacja, czasy):
     return C[-1][-1]
 
 def main():
-    plik_dane = r"../data/data5.txt"  # zmień na swoją nazwę pliku
+    plik_dane = r"../data/N1000M5.txt"  # zmień na swoją nazwę pliku
     plik_best_order = "../best.txt"   # plik z najlepszą permutacją
 
     n, m, czasy = wczytaj_dane(plik_dane)

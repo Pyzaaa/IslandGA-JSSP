@@ -4,186 +4,128 @@ import matplotlib.pyplot as plt
 # Twoje dane wejściowe w formie tekstu
 data_text = """
 
-
-
-============== pop 20000
-N100M5 pop 20000 gen 1000
-3,52
-
-N1000M5 pop 20000 gen 1000
-53,29
-
-N3000M5 pop 20000 gen 1000
-180,56
-
-
-
-============== pop 10000
-N100M5 pop 10000 gen 1000
-1,24
-
-N1000M5 pop 10000 gen 1000
-22,51
-
-N10000M5 pop 10000 gen 1000
-256,88
-
-N100M10 pop 10000 gen 1000
-1,79
-
-N1000M10 pop 10000 gen 1000
-27,93
-
-N10000M10 pop 10000 gen 1000
-318,115
-
-N100M20 pop 10000 gen 1000
-2,95
-
-N1000M20 pop 10000 gen 1000
-40,26
-
-N10000M20 pop 10000 gen 1000
-463,995
-
-
-============== pop 5000
-N100M5 pop 5000 gen 1000
-0,44 s
-
-N1000M5 pop 5000 gen 1000
-7,21 s
-
-N10000M5 pop 5000 gen 1000
-95,2 s
-
-
-N100M10 pop 5000 gen 1000
-0,76 s
-
-N500M10 pop 5000 gen 1000
-4,33 s
-
-N1000M10 pop 5000 gen 1000
-10,05 s
-
-N2000M10 pop 5000 gen 1000
-21,81 s
-
-N3000M10 pop 5000 gen 1000
-34,38
-
-N5000M10 pop 5000 gen 1000
-59,34 s
-
-N10000M10 pop 5000 gen 1000
-122,62 s
-
-
-N100M20 pop 5000 gen 1000
-1,29 s
-
-N1000M20 pop 5000 gen 1000
-15,74 s
-
-N2000M20 pop 5000 gen 1000
-33,51
-
-N5000M20 pop 5000 gen 1000
-88,21
-
-N10000M20 pop 5000 gen 1000
-180,78 s
-
-
-N100M50 pop 5000 gen 1000
-3,24
-
-N500M50 pop 5000 gen 1000
-17,54
-
-N1000M50 pop 5000 gen 1000
-36,47 s
-
-N2000M50 pop 5000 gen 1000
-76,36
-
-N10000M50 pop 5000 gen 1000
-498,86
-
-
-N100M100 pop 5000 gen 1000
-6,38
-
-N500M100 pop 5000 gen 1000
-
-N1000M100 pop 5000 gen 1000
-70,02
-
-N2000M100 pop 5000 gen 1000
-
-
-
-
-
-
+N100M2000 pop 100 gen 1000
+2,81
+N1000M2000 pop 100 gen 1000
+28,69
 
 ============== pop 1000
 N100M5 pop 1000 gen 1000
-0,28 s
-
+1,54
+N500M5 pop 1000 gen 1000
+6,14
 N1000M5 pop 1000 gen 1000
-2,09 s
-
+11,80
+N5000M5 pop 1000 gen 1000
+60,12
 N10000M5 pop 1000 gen 1000
-28,35 s
+121,60
+147% // 12%
 
 N100M10 pop 1000 gen 1000
-0,44 s
-
+1,61
+N500M10 pop 1000 gen 1000
+6,20
 N1000M10 pop 1000 gen 1000
-3,35 s
-
+11,80
+N5000M10 pop 1000 gen 1000
+58,40
 N10000M10 pop 1000 gen 1000
-40,92 s
+115,48
 
 N100M20 pop 1000 gen 1000
-0,69 s
-
+1,79
+156% // 13%
+N500M20 pop 1000 gen 1000
+6,89
 N1000M20 pop 1000 gen 1000
-6,14 s
-
+12,92
+N5000M20 pop 1000 gen 1000
 N10000M20 pop 1000 gen 1000
-69,82 s
+135,47
+234% // 19%
+
+N100M50 pop 1000 gen 1000
+2,16
+N500M50 pop 1000 gen 1000
+8,91
+N1000M50 pop 1000 gen 1000
+17,21
+N5000M50 pop 1000 gen 1000
+N10000M50 pop 1000 gen 1000
+
+
+N100M100 pop 1000 gen 1000
+2,96
+N500M100 pop 1000 gen 1000
+N1000M100 pop 1000 gen 1000
+24,18
+N5000M100 pop 1000 gen 1000
+127,45
+N10000M100 pop 1000 gen 1000
+
+N1000M1000 pop 1000 gen 1000
+153,01
 
 
 ============== pop 100
 N100M5 pop 100 gen 1000
-0,22
-
+0,16
+N500M5 pop 100 gen 1000
+0,51
 N1000M5 pop 100 gen 1000
-1,12
-
+0,88
+N5000M5 pop 100 gen 1000
+3,87
 N10000M5 pop 100 gen 1000
-16,92 s
+8,26
+178% // 14%
 
 N100M10 pop 100 gen 1000
-0,27 s
-
+0,19
+N500M10 pop 100 gen 1000
+0,72
 N1000M10 pop 100 gen 1000
-1,69 s
-
+1,02
+N5000M10 pop 100 gen 1000
+4,28
 N10000M10 pop 100 gen 1000
-20,79 s
+9,76
+199% // 16%
 
 N100M20 pop 100 gen 1000
-0,39 s
-
+0,17
+N500M20 pop 100 gen 1000
 N1000M20 pop 100 gen 1000
-2,78 s
-
+1,08
+N5000M20 pop 100 gen 1000
 N10000M20 pop 100 gen 1000
-30,48 s
+11,26
+358% // 29%
+
+
+N100M100 pop 100 gen 1000
+0,30
+N500M100 pop 100 gen 1000
+N1000M100 pop 100 gen 1000
+2,33
+N5000M100 pop 100 gen 1000
+11,65
+N10000M100 pop 100 gen 1000
+24,31
+611% // 50%
+
+
+N100M1000 pop 100 gen 1000
+1,54
+760% // 63%
+N1000M1000 pop 100 gen 1000
+15,83
+790% przyspieszenie // 66% Efektywność
+
+
+
+
 
 """
 
@@ -201,6 +143,81 @@ for m in matches:
         'time': float(m[4].replace(',', '.'))  # zamiana przecinka na kropkę dla float
     })
 
+# 2 pop
+Ns = sorted(set(r['N'] for r in records))
+ms = sorted(set(r['M'] for r in records))
+
+
+fig, axes = plt.subplots(1, len(Ns), figsize=(18, 5), sharey=True)
+
+for i, N in enumerate(Ns):
+    ax = axes[i]
+    for m in ms:
+        subset = [r for r in records if r['N'] == N and r['M'] == m]
+        subset.sort(key=lambda x: x['pop'])
+
+        x_vals = [r['pop'] for r in subset]
+        y_vals = [r['time'] for r in subset]
+
+        if x_vals:
+            ax.plot(x_vals, y_vals, marker='o', label=f'M={m}')
+
+    ax.set_title(f'N = {N}')
+    ax.set_xlabel('Populacja')
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.grid(True, linestyle='--', alpha=0.7)
+
+    if i == 0:
+        ax.set_ylabel('Czas [s]')
+    ax.legend()
+
+plt.suptitle('Wpływ parametrów N, M i pop na czas wykonania algorytmu', fontsize=14)
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+# Zapis i pokazanie wykresu
+plt.savefig('wykres_algorytmu-pop.png')
+plt.show()
+
+# =====================
+# Przygotowanie osi
+# =====================
+pops = sorted(set(r['pop'] for r in records), reverse=True)
+Ns = sorted(set(r['N'] for r in records))
+
+fig, axes = plt.subplots(1, len(pops), figsize=(18, 5), sharey=True)
+
+# =====================
+# Rysowanie wykresów
+# =====================
+for i, p in enumerate(pops):
+    ax = axes[i]
+
+    for N in Ns:
+        subset = [r for r in records if r['pop'] == p and r['N'] == N]
+        subset.sort(key=lambda x: x['M'])
+
+        x_vals = [r['M'] for r in subset]
+        y_vals = [r['time'] for r in subset]
+
+        if x_vals:  # zabezpieczenie przed pustymi danymi
+            ax.plot(x_vals, y_vals, marker='o', label=f'N={N}')
+
+    ax.set_title(f'Populacja = {p}')
+    ax.set_xlabel('Parametr M')
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.grid(True, linestyle='--', alpha=0.7)
+
+    if i == 0:
+        ax.set_ylabel('Czas wykonania [s]')
+
+    ax.legend()
+
+# Zapis i pokazanie wykresu
+plt.savefig('wykres_algorytmu-M.png')
+plt.show()
+
 # 2. Przygotowanie struktury do wykresu
 pops = sorted(list(set(r['pop'] for r in records)), reverse=True)
 ms = sorted(list(set(r['M'] for r in records)))
@@ -213,16 +230,24 @@ for i, p in enumerate(pops):
     for m in ms:
         # Filtrowanie danych dla konkretnego pop i M
         subset = [r for r in records if r['pop'] == p and r['M'] == m]
-        subset.sort(key=lambda x: x['N'])  # Sortowanie po N
 
+        subset.sort(key=lambda x: x['N'])  # Sortowanie po N
         x_vals = [r['N'] for r in subset]
+
+        # subset.sort(key=lambda x: x['M'])
+        # x_vals = [r['M'] for r in subset]
+
+        #subset.sort(key=lambda x: x['pop'])
+        #x_vals = [r['pop'] for r in subset]
+
         y_vals = [r['time'] for r in subset]
 
         ax.plot(x_vals, y_vals, marker='o', label=f'M={m}')
 
     ax.set_title(f'Wielkość populacji: {p}')
     ax.set_xlabel('Parametr N')
-    # ax.set_xscale('log')  # Skala logarytmiczna dla osi X (100, 1000, 10000)
+    ax.set_yscale('log')  # Skala logarytmiczna dla osi Y (100, 1000, 10000)
+    ax.set_xscale('log')  # Skala logarytmiczna dla osi X (100, 1000, 10000)
     # ax.set_xticks([100, 1000, 10000])
     ax.get_xaxis().set_major_formatter(plt.ScalarFormatter())
     ax.grid(True, linestyle='--', alpha=0.7)

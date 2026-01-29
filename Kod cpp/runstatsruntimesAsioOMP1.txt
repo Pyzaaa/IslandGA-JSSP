@@ -1,0 +1,36 @@
+
+============== pop 1000
+N100M5 pop 1000 gen 10000 mig-int 100
+17,06
+N1000M5 pop 1000 gen 10000 mig-int 100
+110,75
+N10000M5 pop 1000 gen 10000 mig-int 100
+
+
+N100M5 pop 1000 gen 10000 mig-int 1
+17,91
+N1000M5 pop 1000 gen 10000 mig-int 1
+109,99
+N10000M5 pop 1000 gen 10000 mig-int 1
+
+
+
+
+============== pop 100
+N100M5 pop 100 gen 10000 mig-int 100
+1,92
+N1000M5 pop 100 gen 10000 mig-int 100
+8,62
+N10000M5 pop 100 gen 10000 mig-int 100
+83,60
+
+
+N100M5 pop 100 gen 10000 mig-int 1
+2,44
+N1000M5 pop 100 gen 10000 mig-int 1
+9,76
+N10000M5 pop 100 gen 10000 mig-int 1
+90,83
+
+
+

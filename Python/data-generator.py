@@ -32,9 +32,9 @@ def save_flowshop_data(filename: str, data: list[list[int]]) -> None:
 
 if __name__ == "__main__":
     # <<< CONFIGURE HERE >>>
-    output_file = "N2000M100.txt"     # file name to save
-    num_jobs = 2000                 # number of jobs
-    num_machines = 100             # number of machines
+    output_file = "N1000M2000.txt"     # file name to save
+    num_jobs = 1000                 # number of jobs
+    num_machines = 2000             # number of machines
     min_proc_time = 1            # min processing time
     max_proc_time = 60           # max processing time
     random_seed = None             # for reproducibility (set to None for random each time)
